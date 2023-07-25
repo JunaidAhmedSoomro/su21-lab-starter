@@ -1,7 +1,8 @@
+// Copyright 2023 10X Engineers JUNAID
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "linked_list.h"
+#include "/home/user3/C Language/su21-lab-starter/lab01/exercise3/linked_list.h"
 
 int main(int argc, char **argv) {
     printf("Running tests...\n\n");

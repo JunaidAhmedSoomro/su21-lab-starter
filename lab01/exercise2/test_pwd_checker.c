@@ -1,23 +1,21 @@
+// Copyright 2023 10X Engineers JUNAID
 #include <assert.h>
 #include <stdio.h>
-#include "pwd_checker.h"
+#include "/home/user3/C Language/su21-lab-starter/lab01/exercise2/pwd_checker.h" 
 
 int main() {
     printf("Running tests...\n\n");
-
     const char *test1_first = "Abraham";
     const char *test1_last = "Garcia";
     const char *test1_pwd = "qrtv?,mp!ltrA0b13rab4ham";
     bool test1 = check_password(test1_first, test1_last, test1_pwd);
     assert(test1);
-
     printf("Congrats! The first test case is now passing. You should remove the assert statements that you added "
-           "to pwd_checker.c because these correspond to the first test case and will not necessarily work for the remaining "
+           "to pwd_checker.c because these correspond to the first test case and will not necessarily work for the remaining"
            "test cases!\n\n");
-
     const char *test2_first = "Anjali";
     const char *test2_last = "Patel";
-    const char *test2_pwd = "Aj8r";
+    const char *test2_pwd = "AnjaliAj8r";
     bool test2 = check_password(test2_first, test2_last, test2_pwd);
     assert(!test2);
 
@@ -50,7 +48,6 @@ int main() {
     const char *test7_pwd = "ALKLIDuBoisen3hLq";
     bool test7 = check_password(test7_first, test7_last, test7_pwd);
     assert(!test7);
-
     printf("Congrats! You have passed all of the test cases!\n");
     return 0;
-}
+  }

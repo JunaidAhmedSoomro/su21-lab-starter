@@ -1,117 +1,147 @@
-/* Include the system headers we need */
+// Copyright 2023 10X Engineers JUNAID
 #include <stdlib.h>
 #include <stdio.h>
+#include "/home/user3/C Language/su21-lab-starter/lab02/vector.h"
 
-/* Include our header */
-#include "vector.h"
 
 /* Define what our struct is */
 struct vector_t {
-    size_t size;
-    int *data;
+size_t size;
+int *data;
 };
 
-/* Utility function to handle allocation failures. In this
-   case we print a message and exit. */
+
+/* Utility function to handle allocation failures. In thi case we print a message and exit. */
 static void allocation_failed() {
-    fprintf(stderr, "Out of memory.\n");
-    exit(1);
+fprintf(stderr, "Out of memory.\n");
+exit(1);
 }
+
 
 /* Bad example of how to create a new vector */
-vector_t *bad_vector_new() {
-    /* Create the vector and a pointer to it */
-    vector_t *retval, v;
-    retval = &v;
+struct vector_t *bad_vector_new() {
+/* Create the vector and a pointer to it */
+struct vector_t *retval, v;
+retval = &v;
 
-    /* Initialize attributes */
-    retval->size = 1;
-    retval->data = malloc(sizeof(int));
-    if (retval->data == NULL) {
-        allocation_failed();
-    }
 
-    retval->data[0] = 0;
-    return retval;
+/* Initialize attributes */
+retval->size = 1;
+retval->data = malloc(sizeof(int));
+if (retval->data == NULL) {
+allocation_failed();
 }
+
+
+retval->data[0] = 0;
+return retval;
+}
+
 
 /* Another suboptimal way of creating a vector */
-vector_t also_bad_vector_new() {
-    /* Create the vector */
-    vector_t v;
+struct vector_t also_bad_vector_new() {
+/* Create the vector */
+struct vector_t v;
 
-    /* Initialize attributes */
-    v.size = 1;
-    v.data = malloc(sizeof(int));
-    if (v.data == NULL) {
-        allocation_failed();
-    }
-    v.data[0] = 0;
-    return v;
+
+/* Initialize attributes */
+v.size = 1;
+v.data = malloc(sizeof(int));
+if (v.data == NULL) {
+allocation_failed();
+}
+v.data[0] = 0;
+return v;
 }
 
-/* Create a new vector with a size (length) of 1 and set its single component to zero... the
-   right way */
-/* TODO: uncomment the code that is preceded by // */
-vector_t *vector_new() {
-    /* Declare what this function will return */
-    // vector_t *retval;
 
-    /* First, we need to allocate memory on the heap for the struct */
-    // retval = /* YOUR CODE HERE */
+// Function to create a new vector
+struct vector_t *vector_new() {
+struct vector_t *retval;
 
-    /* Check our return value to make sure we got memory */
-    // if (/* YOUR CODE HERE */) {
-    //     allocation_failed();
-    // }
 
-    /* Now we need to initialize our data.
-       Since retval->data should be able to dynamically grow,
-       what do you need to do? */
-    // retval->size = /* YOUR CODE HERE */;
-    // retval->data = /* YOUR CODE HERE */;
-
-    /* Check the data attribute of our vector to make sure we got memory */
-    // if (/* YOUR CODE HERE */) {
-    //     free(retval);				//Why is this line necessary?
-    //     allocation_failed();
-    // }
-
-    /* Complete the initialization by setting the single component to zero */
-    // /* YOUR CODE HERE */ = 0;
-
-    /* and return... */
-    return NULL; /* UPDATE RETURN VALUE */
+// Allocate memory on the heap to hold the struct vector_t
+retval = (struct vector_t*)malloc(sizeof(struct vector_t));
+if (retval == NULL) {
+allocation_failed();
 }
 
-/* Return the value at the specified location/component "loc" of the vector */
-int vector_get(vector_t *v, size_t loc) {
 
-    /* If we are passed a NULL pointer for our vector, complain about it and exit. */
-    if(v == NULL) {
-        fprintf(stderr, "vector_get: passed a NULL vector.\n");
-        abort();
-    }
-
-    /* If the requested location is higher than we have allocated, return 0.
-     * Otherwise, return what is in the passed location.
-     */
-    /* YOUR CODE HERE */
-    return 0;
+// Allocate memory for a single integer in the data array
+retval->data = (int*)malloc(sizeof(int));
+if (retval->data == NULL) {
+// If memory allocation fails, free the previously allocated struct vector_t
+free(retval);
+allocation_failed();
 }
 
-/* Free up the memory allocated for the passed vector.
-   Remember, you need to free up ALL the memory that was allocated. */
-void vector_delete(vector_t *v) {
-    /* YOUR CODE HERE */
+
+// Initialize the size to 1 and the first element in the data array to 0
+retval->size = 1;
+retval->data[0] = 0;
+
+
+return retval;
 }
 
-/* Set a value in the vector. If the extra memory allocation fails, call
-   allocation_failed(). */
-void vector_set(vector_t *v, size_t loc, int value) {
-    /* What do you need to do if the location is greater than the size we have
-     * allocated?  Remember that unset locations should contain a value of 0.
-     */
 
-    /* YOUR CODE HERE */
+// Function to get the value at a specified location in the vector
+int vector_get(struct vector_t *v, size_t loc) {
+if (v == NULL) {
+fprintf(stderr, "vector_get: passed a NULL vector.\n");
+abort();
 }
+
+
+// If the requested location is beyond the vector size, return 0
+if (v->size <= loc) {
+return 0;
+}
+
+
+// Otherwise, return the value at the specified location
+return v->data[loc];
+}
+
+
+// Function to free the memory allocated for the vector
+void vector_delete(struct vector_t *v) {
+if (v != NULL) {
+free(v->data);
+free(v);
+}
+}
+
+
+// Function to set a value at a specified location in the vector
+void vector_set(struct vector_t *v, size_t loc, int value) {
+if (v == NULL) {
+fprintf(stderr, "vector_set: passed a NULL vector.\n");
+abort();
+}
+
+
+// If the location is greater than or equal to the vector size, resize the vector
+if (loc >= v->size) {
+// Reallocate memory for the data array with a larger size
+int *new_data = (int*)realloc(v->data, (loc + 1) * sizeof(int));
+if (new_data == NULL) {
+allocation_failed();
+}
+v->data = new_data;
+
+
+// Initialize the new elements to 0
+for (size_t i = v->size; i <= loc; i++) {
+v->data[i] = 0;
+}
+
+
+// Update the size of the vector
+v->size = loc + 1;
+}
+// Set the value at the specified location
+v->data[loc] = value;
+}
+
+

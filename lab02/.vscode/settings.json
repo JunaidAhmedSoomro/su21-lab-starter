@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "bit_ops.h": "c"
+        "bit_ops.h": "c",
+        "stdlib.h": "c"
     }
 }
